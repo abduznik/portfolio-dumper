@@ -1,6 +1,6 @@
 services:
   app:
-    build: .
+    image: ghcr.io/abduznik/portfolio-dumper:latest
     ports:
       - "8080:80"
     restart: unless-stopped

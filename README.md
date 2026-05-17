@@ -32,20 +32,30 @@ Since this is a static site, you can serve the index.html file and the assets fo
 
 ### Using Docker
 
-A Dockerfile and docker-compose.yml are provided for easy deployment.
+A pre-built Docker image is available via GitHub Packages (GHCR).
 
-#### Build and Run with Docker
+#### Run with Docker
 
-To build the image and run the container:
+To run the latest version directly:
 
 ```bash
-docker build -t portfolio-dumper .
-docker run -d -p 8080:80 portfolio-dumper
+docker run -d -p 8080:80 ghcr.io/abduznik/portfolio-dumper:latest
 ```
 
 #### Using Docker Compose
 
-To start the application using Docker Compose:
+Create a `docker-compose.yml` file with the following content:
+
+```yaml
+services:
+  app:
+    image: ghcr.io/abduznik/portfolio-dumper:latest
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+```
+
+Then start the application:
 
 ```bash
 docker-compose up -d
