@@ -89,10 +89,11 @@
         <!-- Form Section -->
         <div class="space-y-6">
             <div class="flex flex-col sm:flex-row gap-2">
-                <input 
-                    type="text" 
-                    id="usernameInput" 
-                    placeholder="github.com/username" 
+                <input
+                    type="text"
+                    id="usernameInput"
+                    placeholder="github.com/username"
+                    aria-label="GitHub username or profile URL"
                     class="flex-1 px-6 py-4 text-lg border border-gray-200 rounded-xl input-focus bg-gray-50 transition-all"
                 />
                 <button 
@@ -190,9 +191,10 @@
                         Download
                     </button>
                 </div>
-                <textarea 
-                    id="outputArea" 
-                    readonly 
+                <textarea
+                    id="outputArea"
+                    readonly
+                    aria-label="Generated Markdown output"
                     class="w-full h-[500px] px-6 py-8 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 mono text-sm focus:outline-none resize-none overflow-y-auto"
                     placeholder="Markdown output will appear here..."
                 ></textarea>
