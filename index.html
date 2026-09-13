@@ -7,14 +7,52 @@
     <link rel="icon" type="image/png" href="favicon.png?v=4">
     <link rel="icon" type="image/x-icon" href="favicon.ico?v=4">
     <link rel="shortcut icon" href="favicon.ico?v=4">
+    <script>
+        (function () {
+            const saved = localStorage.getItem('theme');
+            const theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-        
+
+        :root {
+            --bg: #ffffff;
+            --fg: #1a1a1a;
+            --muted: #6b7280;
+            --muted-light: #9ca3af;
+            --border: #e5e7eb;
+            --card-bg: #f9fafb;
+            --input-bg: #f9fafb;
+            --output-bg: #f9fafb;
+            --accent: #000000;
+            --accent-fg: #ffffff;
+            --accent-hover: #333333;
+            --accent-disabled: #cccccc;
+        }
+
+        html[data-theme="dark"] {
+            --bg: #0d0d0d;
+            --fg: #f2f2f2;
+            --muted: #9ca3af;
+            --muted-light: #6b7280;
+            --border: #2a2a2a;
+            --card-bg: #171717;
+            --input-bg: #171717;
+            --output-bg: #171717;
+            --accent: #ffffff;
+            --accent-fg: #000000;
+            --accent-hover: #d4d4d4;
+            --accent-disabled: #3f3f3f;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
-            color: #1a1a1a;
+            background-color: var(--bg);
+            color: var(--fg);
+            transition: background-color 0.2s, color 0.2s;
         }
 
         .mono {
@@ -23,18 +61,18 @@
 
         .input-focus:focus {
             outline: none;
-            border-color: #000000;
-            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.15);
         }
 
         .btn-black {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: var(--accent);
+            color: var(--accent-fg);
             transition: all 0.2s;
         }
 
         .btn-black:hover {
-            background-color: #333333;
+            background-color: var(--accent-hover);
         }
 
         .btn-black:active {
@@ -42,16 +80,71 @@
         }
 
         .btn-black:disabled {
-            background-color: #cccccc;
+            background-color: var(--accent-disabled);
             cursor: not-allowed;
             transform: none;
         }
 
         .card {
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
             border-radius: 12px;
-            background-color: #f9fafb;
+            background-color: var(--card-bg);
         }
+
+        .themed-border {
+            border-color: var(--border) !important;
+        }
+
+        .themed-bg {
+            background-color: var(--input-bg) !important;
+        }
+
+        .themed-text {
+            color: var(--fg) !important;
+        }
+
+        .themed-muted {
+            color: var(--muted) !important;
+        }
+
+        .themed-muted-light {
+            color: var(--muted-light) !important;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 9999px;
+            border: 1px solid var(--border);
+            background-color: var(--card-bg);
+            color: var(--fg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+        }
+
+        .hover-themed-text:hover {
+            color: var(--fg) !important;
+        }
+
+        .hover-themed-muted:hover {
+            color: var(--muted) !important;
+        }
+
+        .hover-border-accent:hover {
+            border-color: var(--accent) !important;
+        }
+
+        .theme-toggle .icon-sun { display: none; }
+        .theme-toggle .icon-moon { display: block; }
+        html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+        html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
         /* GitIngest specific styling cues */
         .gitingest-header {
@@ -68,20 +161,24 @@
     <nav class="w-full max-w-5xl flex justify-between items-center mb-16">
         <div class="flex items-center gap-4 font-bold text-xl tracking-tight">
             <img src="assets/logo.png" alt="Logo" class="w-32 h-32 object-contain">
-            <span class="text-2xl">Portfolio <span class="text-gray-400">Dumper</span></span>
+            <span class="text-2xl themed-text">Portfolio <span class="themed-muted-light">Dumper</span></span>
         </div>
-        <div class="flex gap-6 text-4xl font-extrabold text-gray-700">
-            <a href="https://github.com/abduznik/portfolio-dumper" class="hover:text-black transition-colors">GitHub Repo</a>
+        <div class="flex items-center gap-6">
+            <a href="https://github.com/abduznik/portfolio-dumper" class="text-2xl font-extrabold themed-muted hover-themed-text transition-colors">GitHub Repo</a>
+            <button onclick="toggleTheme()" id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <main class="w-full max-w-3xl text-center space-y-10">
         <div class="space-y-4">
-            <h1 class="gitingest-header">
-                Portfolio <span class="text-gray-300">Dumper</span>
+            <h1 class="gitingest-header themed-text">
+                Portfolio <span class="themed-muted-light">Dumper</span>
             </h1>
-            <p class="text-xl text-gray-500 max-w-xl mx-auto">
+            <p class="text-xl themed-muted max-w-xl mx-auto">
                 Turn any GitHub profile into a clean Markdown list of repositories for your LLM or README.
             </p>
         </div>
@@ -94,7 +191,7 @@
                     id="usernameInput"
                     placeholder="github.com/username"
                     aria-label="GitHub username or profile URL"
-                    class="flex-1 px-6 py-4 text-lg border border-gray-200 rounded-xl input-focus bg-gray-50 transition-all"
+                    class="flex-1 px-6 py-4 text-lg border rounded-xl input-focus themed-border themed-bg themed-text transition-all"
                 />
                 <button 
                     onclick="generateMarkdown()" 
@@ -108,36 +205,36 @@
             <!-- Ingestion Mode Selector -->
             <div class="flex justify-center gap-6 py-2">
                 <label class="flex items-center gap-2 cursor-pointer group">
-                    <input type="radio" name="ingestMode" value="both" checked class="w-4 h-4 accent-black">
-                    <span class="text-sm font-bold text-gray-500 group-hover:text-black transition-colors">Everything</span>
+                    <input type="radio" name="ingestMode" value="both" checked class="w-4 h-4 accent-current themed-text">
+                    <span class="text-sm font-bold themed-muted group-hover:themed-text transition-colors">Everything</span>
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer group">
-                    <input type="radio" name="ingestMode" value="readme" class="w-4 h-4 accent-black">
-                    <span class="text-sm font-bold text-gray-500 group-hover:text-black transition-colors">Only README</span>
+                    <input type="radio" name="ingestMode" value="readme" class="w-4 h-4 accent-current themed-text">
+                    <span class="text-sm font-bold themed-muted group-hover:themed-text transition-colors">Only README</span>
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer group">
-                    <input type="radio" name="ingestMode" value="repos" class="w-4 h-4 accent-black">
-                    <span class="text-sm font-bold text-gray-500 group-hover:text-black transition-colors">Only Repos</span>
+                    <input type="radio" name="ingestMode" value="repos" class="w-4 h-4 accent-current themed-text">
+                    <span class="text-sm font-bold themed-muted group-hover:themed-text transition-colors">Only Repos</span>
                 </label>
             </div>
 
             <!-- PAT / Settings Toggle -->
             <div class="text-left">
-                <button onclick="toggleSettings()" class="text-xs font-bold text-gray-400 hover:text-gray-600 uppercase tracking-widest flex items-center gap-2 mb-3">
+                <button onclick="toggleSettings()" class="text-xs font-bold themed-muted-light hover-themed-muted uppercase tracking-widest flex items-center gap-2 mb-3">
                     <svg id="settingsIcon" class="transition-transform duration-200" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                     Configure Ingestion
                 </button>
-                
+
                 <div id="settingsPanel" class="hidden space-y-4 p-4 card animate-in fade-in slide-in-from-top-2 duration-200">
                     <div class="space-y-1">
-                        <label for="patInput" class="text-xs font-bold text-gray-500 uppercase tracking-wider">GitHub Personal Access Token (Optional)</label>
-                        <input 
-                            type="password" 
-                            id="patInput" 
-                            placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" 
-                            class="w-full px-4 py-3 border border-gray-200 rounded-lg input-focus bg-white text-sm mono"
+                        <label for="patInput" class="text-xs font-bold themed-muted uppercase tracking-wider">GitHub Personal Access Token (Optional)</label>
+                        <input
+                            type="password"
+                            id="patInput"
+                            placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                            class="w-full px-4 py-3 border rounded-lg input-focus themed-border themed-bg themed-text text-sm mono"
                         />
-                        <p class="text-[11px] text-gray-400">Required for high rate limits or private repositories (if you're self-hosting this static page).</p>
+                        <p class="text-[11px] themed-muted-light">Required for high rate limits or private repositories (if you're self-hosting this static page).</p>
                     </div>
                 </div>
             </div>
@@ -145,8 +242,8 @@
 
         <!-- Status & Results -->
         <div id="statusSection" class="hidden py-4">
-            <div id="statusMessage" class="text-sm font-medium text-gray-600 flex items-center justify-center gap-2">
-                <svg class="animate-spin h-4 w-4 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <div id="statusMessage" class="text-sm font-medium themed-muted flex items-center justify-center gap-2">
+                <svg class="animate-spin h-4 w-4 themed-text" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 Processing...
             </div>
         </div>
@@ -154,38 +251,38 @@
         <div id="resultSection" class="hidden space-y-6 text-left">
             <!-- Stats -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div class="p-4 card text-center border-gray-100">
-                    <div id="repoCount" class="text-3xl font-extrabold tracking-tight">0</div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Repositories</div>
+                <div class="p-4 card text-center">
+                    <div id="repoCount" class="text-3xl font-extrabold tracking-tight themed-text">0</div>
+                    <div class="text-[10px] font-bold themed-muted-light uppercase tracking-widest mt-1">Repositories</div>
                 </div>
-                <div class="p-4 card text-center border-gray-100">
-                    <div id="starCount" class="text-3xl font-extrabold tracking-tight">0</div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Total Stars</div>
+                <div class="p-4 card text-center">
+                    <div id="starCount" class="text-3xl font-extrabold tracking-tight themed-text">0</div>
+                    <div class="text-[10px] font-bold themed-muted-light uppercase tracking-widest mt-1">Total Stars</div>
                 </div>
-                <div class="p-4 card text-center border-gray-100">
-                    <div id="forkCount" class="text-3xl font-extrabold tracking-tight">0</div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Forks</div>
+                <div class="p-4 card text-center">
+                    <div id="forkCount" class="text-3xl font-extrabold tracking-tight themed-text">0</div>
+                    <div class="text-[10px] font-bold themed-muted-light uppercase tracking-widest mt-1">Forks</div>
                 </div>
-                <div class="p-4 card text-center border-gray-100">
-                    <div id="langCount" class="text-3xl font-extrabold tracking-tight">0</div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Languages</div>
+                <div class="p-4 card text-center">
+                    <div id="langCount" class="text-3xl font-extrabold tracking-tight themed-text">0</div>
+                    <div class="text-[10px] font-bold themed-muted-light uppercase tracking-widest mt-1">Languages</div>
                 </div>
             </div>
 
             <!-- Output -->
             <div class="relative group">
                 <div class="absolute right-4 top-4 flex gap-2">
-                    <button 
-                        onclick="copyToClipboard()" 
+                    <button
+                        onclick="copyToClipboard()"
                         id="copyBtn"
-                        class="px-4 py-2 bg-white border border-gray-200 hover:border-black text-gray-700 rounded-lg text-xs font-bold shadow-sm transition-all flex items-center gap-2"
+                        class="px-4 py-2 themed-bg border themed-border hover-border-accent themed-muted rounded-lg text-xs font-bold shadow-sm transition-all flex items-center gap-2"
                     >
                         <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                         Copy
                     </button>
-                    <button 
-                        onclick="downloadMarkdown()" 
-                        class="px-4 py-2 bg-white border border-gray-200 hover:border-black text-gray-700 rounded-lg text-xs font-bold shadow-sm transition-all flex items-center gap-2"
+                    <button
+                        onclick="downloadMarkdown()"
+                        class="px-4 py-2 themed-bg border themed-border hover-border-accent themed-muted rounded-lg text-xs font-bold shadow-sm transition-all flex items-center gap-2"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                         Download
@@ -195,19 +292,26 @@
                     id="outputArea"
                     readonly
                     aria-label="Generated Markdown output"
-                    class="w-full h-[500px] px-6 py-8 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 mono text-sm focus:outline-none resize-none overflow-y-auto"
+                    class="w-full h-[500px] px-6 py-8 themed-bg border themed-border rounded-2xl themed-text mono text-sm focus:outline-none resize-none overflow-y-auto"
                     placeholder="Markdown output will appear here..."
                 ></textarea>
             </div>
         </div>
     </main>
 
-    <footer class="mt-auto pt-24 pb-12 text-center text-gray-400 text-xs font-medium uppercase tracking-widest flex flex-col items-center gap-4">
+    <footer class="mt-auto pt-24 pb-12 text-center themed-muted-light text-xs font-medium uppercase tracking-widest flex flex-col items-center gap-4">
         <div>&copy; 2026 Portfolio Dumper</div>
     </footer>
 
     <script>
         let currentUsername = "";
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
 
         function toggleSettings() {
             const panel = document.getElementById('settingsPanel');
@@ -247,7 +351,7 @@
             resultSection.classList.add('hidden');
             
             const targetLabel = repoName ? `${username}/${repoName}` : username;
-            statusMessage.innerHTML = `<svg class="animate-spin h-4 w-4 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Ingesting ${targetLabel}...`;
+            statusMessage.innerHTML = `<svg class="animate-spin h-4 w-4 themed-text" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Ingesting ${targetLabel}...`;
 
             const headers = { 'Accept': 'application/vnd.github.v3+json' };
             if (pat) headers['Authorization'] = `token ${pat}`;

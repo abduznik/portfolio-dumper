@@ -6,9 +6,11 @@
 
 # Portfolio Dumper
 
-![Portfolio Dumper Demo](assets/demo.png)
+![Portfolio Dumper Demo](assets/demo.jpg)
 
 Portfolio Dumper is a minimalist static web application designed to convert GitHub profiles and repositories into clean, LLM-friendly Markdown. It allows users to quickly ingest profile READMEs, repository lists, or specific repository metadata for use in documentation, portfolios, or AI prompts.
+
+![Portfolio Dumper after ingesting a profile](assets/demo-ingested.jpg)
 
 ## Features
 
@@ -19,6 +21,7 @@ Portfolio Dumper is a minimalist static web application designed to convert GitH
 - Personal Access Token Support: Option to use a GitHub PAT for higher rate limits and access to private data.
 - Statistics Overview: Real-time calculation of repository counts, star counts, forks, and language diversity.
 - Export Options: Easy copying to clipboard or downloading as a Markdown file.
+- Dark Mode by Default: Toggle between dark and light themes with the button in the navbar; your choice is remembered.
 - Static and Secure: Runs entirely in the browser using the GitHub REST API.
 
 ## Usage
