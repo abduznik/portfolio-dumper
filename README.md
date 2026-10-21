@@ -17,8 +17,9 @@ Portfolio Dumper is a minimalist static web application designed to convert GitH
 - Profile Ingestion: Fetch a user profile README and their list of original repositories.
 - Targeted Repository Ingestion: Paste a specific repository URL to fetch its README and metadata directly.
 - Flexible Ingestion Modes: Choose between fetching only the README, only the repositories, or both.
-- Intelligent Input Parsing: Support for raw usernames, profile URLs, and deep repository links.
-- Personal Access Token Support: Option to use a GitHub PAT for higher rate limits and access to private data.
+- Intelligent Input Parsing: Support for raw usernames, @handles, profile URLs, deep repository links, and `.git` or SSH clone URLs.
+- Organisation Support: Organisation pages are ingested too, using the org's `.github/profile/README.md`.
+- Personal Access Token Support: Option to use a GitHub PAT for higher rate limits (60 to 5,000 requests per hour). Private repositories are not included yet, see [#5](https://github.com/abduznik/portfolio-dumper/issues/5).
 - Statistics Overview: Real-time calculation of repository counts, star counts, forks, and language diversity.
 - Export Options: Easy copying to clipboard or downloading as a Markdown file.
 - Dark Mode by Default: Toggle between dark and light themes with the button in the navbar; your choice is remembered.
@@ -78,6 +79,10 @@ The application will be available at http://localhost:8080.
 - API: GitHub REST API v3.
 - Logic: Vanilla JavaScript for all fetching and processing.
 - Security: No server-side processing. All tokens are used only within your local browser context.
+
+## Roadmap and Versioning
+
+Work is grouped into [milestones](https://github.com/abduznik/portfolio-dumper/milestones), and each milestone ships as a version. The current version is shown in the site footer. See [ROADMAP.md](ROADMAP.md) for what is planned (a CLI is next) and [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 ## License
 
